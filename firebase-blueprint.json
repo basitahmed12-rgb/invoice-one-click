@@ -1,0 +1,51 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "User account information and subscription status",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "User ID" },
+        "email": { "type": "string", "format": "email", "description": "User email" },
+        "displayName": { "type": "string", "description": "User display name" },
+        "plan": { "type": "string", "enum": ["free", "paid"], "description": "Subscription plan" },
+        "businessName": { "type": "string", "description": "Business name for invoices" },
+        "businessAddress": { "type": "string", "description": "Business address" },
+        "businessTaxId": { "type": "string", "description": "Tax ID / VAT number" },
+        "brandingLogo": { "type": "string", "description": "URL to business logo" }
+      },
+      "required": ["uid", "email", "plan"]
+    },
+    "Invoice": {
+      "title": "Invoice",
+      "description": "Invoice document details",
+      "type": "object",
+      "properties": {
+        "invoiceNumber": { "type": "string", "description": "Unique invoice identifier" },
+        "date": { "type": "string", "format": "date", "description": "Invoice date" },
+        "dueDate": { "type": "string", "format": "date", "description": "Due date" },
+        "sellerDetails": { "type": "object", "description": "Seller contact info" },
+        "buyerDetails": { "type": "object", "description": "Buyer contact info" },
+        "items": { "type": "array", "description": "List of items or services" },
+        "subtotal": { "type": "number", "description": "Total before tax" },
+        "taxRate": { "type": "number", "description": "Tax percentage" },
+        "taxAmount": { "type": "number", "description": "Total tax amount" },
+        "totalAmount": { "type": "number", "description": "Grand total" },
+        "status": { "type": "string", "enum": ["draft", "sent", "paid"], "description": "Invoice status" },
+        "userId": { "type": "string", "description": "Creator UID" },
+        "templateId": { "type": "string", "description": "ID of the template used" }
+      },
+      "required": ["invoiceNumber", "date", "sellerDetails", "buyerDetails", "items", "totalAmount", "userId"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": {
+      "schema": "UserProfile",
+      "description": "User profile documents"
+    },
+    "/invoices/{invoiceId}": {
+      "schema": "Invoice",
+      "description": "Invoice documents"
+    }
+  }
+}
